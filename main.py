@@ -1,4 +1,3 @@
-from typing import Optional
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -11,10 +10,14 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+@app.get('/hello')
+async def get_hello_world(name: str = "world"):
+    return {'hello': name}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+@app.get('/hello/{name}')
+async def get_hello_name(name: str):
+    return {'hello': name}
+
+@app.post('/hello')
+async def post_hello_name(data: dict):
+    return {'hello': data.get('name', 'world')}
